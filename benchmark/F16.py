@@ -6,7 +6,7 @@
 import math
 import numpy as np
 
-def F_16(X):
+def func(X):
     t1 = 4 * X[0]**2
     t2 = -1 * 2.1 * X[0]**4
     t3 = X[0]**6 / 3
@@ -19,5 +19,5 @@ def F_16(X):
 if __name__ == '__main__':
     X = np.arange(2)  # Dimension must be 2, in [-5 to 5]
     print(X)
-    result = F_16(X)
+    result = func(X)
     print(result)

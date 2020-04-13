@@ -6,7 +6,7 @@
 import math
 import numpy as np
 
-def F_11(X):
+def func(X):
     agg = np.sum(X**2)/4000
     index = np.arange(1, 1+X.size)
     cos_term = np.cos(np.divide(X,index**0.5))
@@ -18,5 +18,5 @@ if __name__ == '__main__':
     X = np.arange(30)
     X = X * 0.3
     print(X)
-    result = F_11(X)
+    result = func(X)
     print(result)

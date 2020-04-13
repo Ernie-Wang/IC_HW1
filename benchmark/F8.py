@@ -6,7 +6,7 @@
 import math
 import numpy as np
 
-def F_8(X):
+def func(X):
     sin_term = np.sin(np.absolute(X)**0.5)
     result = np.sum(-1*np.multiply(X, sin_term))
     return result
@@ -15,5 +15,5 @@ if __name__ == '__main__':
     X = np.arange(30)
     X = X * 0.3
     print(X)
-    result = F_8(X)
+    result = func(X)
     print(result)

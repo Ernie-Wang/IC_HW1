@@ -2,7 +2,7 @@ import math
 import random
 import numpy as np
 
-def F_7(X):
+def func(X):
     tmp = 0
     for i, x in enumerate(X):
         rand = 1
@@ -16,5 +16,5 @@ if __name__ == '__main__':
     # X = np.arange(10)
     # X = X * 0.3
     print(X)
-    result = F_7(X)
+    result = func(X)
     print(result)

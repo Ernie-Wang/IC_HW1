@@ -6,7 +6,8 @@
 import math
 import numpy as np
 
-def u(X, a, k, m):
+def u(u_X, a, k, m):
+    X = u_X.copy()
     for index in range(X.size):
         element = X[index]
         if element > a:
@@ -17,7 +18,7 @@ def u(X, a, k, m):
             X[index] = 0
     return X
 
-def F_12(X):
+def func(X):
     Y = 1 + (X+1)/4
     f_term = 10 * math.sin(math.pi*Y[0])**2
     m_1 = (Y[0:-1] - 1)**2
@@ -33,5 +34,5 @@ if __name__ == '__main__':
     X = np.arange(10)
     X = X * 0.3
     print(X)
-    result = F_12(X)
+    result = func(X)
     print(result)
