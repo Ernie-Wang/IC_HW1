@@ -1,14 +1,18 @@
+# Bench mark function 7
+# Quartic Function
+# HW dimension: 30
+# Min = 0+random noise when X={0,0,0,....0}
+# Range [-30,30]
+# Reference: http://benchmarkfcns.xyz/benchmarkfcns/quarticfcn.html
+
 import math
 import random
 import numpy as np
 
 def func(X):
-    tmp = 0
-    for i, x in enumerate(X):
-        rand = 1
-        while rand == 1:
-            rand = random.random()
-        tmp = tmp + math.pow(x, 4) * (i + 1) + rand
+    index = np.arange(1, 1+X.size)
+    f_term = np.sum(np.multiply(index, X**4))
+    tmp = f_term + random.random()
     return tmp
 
 if __name__ == '__main__':

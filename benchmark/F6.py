@@ -1,3 +1,10 @@
+# Bench mark function 6
+# Step Function
+# HW dimension: 30
+# Min = 0
+# Range [-10,10]
+# Reference: No
+
 import math
 import numpy as np
 

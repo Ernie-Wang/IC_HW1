@@ -1,6 +1,8 @@
 # Bench mark function 11
 # Griewank Function
+# HW dimension: 30
 # Min = 0 when X={0,0,0,....0}
+# Range [-600,600]
 # Reference: http://benchmarkfcns.xyz/benchmarkfcns/griewankfcn.html
 
 import math

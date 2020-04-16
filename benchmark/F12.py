@@ -1,6 +1,8 @@
 # Bench mark function 12
 # Generalized Penalized Function No.01
+# HW dimension: 30
 # Min = 0
+# Range [-50,50]
 # Reference: https://al-roomi.org/benchmarks/unconstrained/n-dimensions/172-generalized-penalized-function-no-1
 
 import math

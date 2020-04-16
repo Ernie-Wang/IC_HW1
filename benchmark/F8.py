@@ -1,6 +1,8 @@
 # Bench mark function 8
 # Generalized Schwefel's Function No.2.26
+# HW dimension: 30
 # Min = −418.982887272433799807913601398 * n
+# Range [-500,500]
 # Reference: https://www.al-roomi.org/benchmarks/unconstrained/n-dimensions/176-generalized-schwefel-s-problem-2-26
 
 import math

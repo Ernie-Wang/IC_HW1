@@ -1,6 +1,8 @@
 # Bench mark function 16
 # Six-Hump Camel-Back Function
+# HW dimension: 2
 # Min = −1.031628453489877
+# Range [-5,5]
 # Reference: https://al-roomi.org/benchmarks/unconstrained/2-dimensions/23-six-hump-camel-back-function
 
 import math
