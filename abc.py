@@ -1,6 +1,5 @@
-""" Python PSO """
-import random
 import numpy as np
+import random
 
 from benchmark import F7 as test
 
@@ -61,6 +60,6 @@ class PSO():
             self.X = tmp_X.copy()
 
 if __name__ == "__main__":
-    f7 = PSO (dim=30,num=50,max_iter=2500, u_bound=30, l_bound=-30, func=test.func)
-    f7.pso_init()
-    f7.pso_iterator()
+    f7 = ABC (dim=30, num=50, max_iter=2500, u_bound=600, l_bound=-600, func=test.func)
+    f7.abc_init()
+    f7.abc_iterator()
