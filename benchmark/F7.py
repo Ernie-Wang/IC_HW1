@@ -9,6 +9,9 @@ import math
 import random
 import numpy as np
 
+l_bound = -30
+u_bound = 30
+
 def func(X):
     index = np.arange(1, 1+X.size)
     f_term = np.sum(np.multiply(index, X**4))

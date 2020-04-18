@@ -8,6 +8,9 @@
 import math
 import numpy as np
 
+l_bound = -10
+u_bound = 10
+
 def func(X):
     tmp = 0
     for x in X:

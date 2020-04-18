@@ -8,6 +8,9 @@
 import math
 import numpy as np
 
+l_bound = -5
+u_bound = 5
+
 def func(X):
     t1 = 4 * X[0]**2
     t2 = -1 * 2.1 * X[0]**4

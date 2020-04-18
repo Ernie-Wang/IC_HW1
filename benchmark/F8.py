@@ -8,6 +8,9 @@
 import math
 import numpy as np
 
+l_bound = -500
+u_bound = 500
+
 def func(X):
     sin_term = np.sin(np.absolute(X)**0.5)
     result = np.sum(-1*np.multiply(X, sin_term))

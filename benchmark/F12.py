@@ -8,6 +8,9 @@
 import math
 import numpy as np
 
+l_bound = -50
+u_bound = 50
+
 def u(u_X, a, k, m):
     X = u_X.copy()
     for index in range(X.size):

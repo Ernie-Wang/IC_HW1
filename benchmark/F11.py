@@ -8,6 +8,9 @@
 import math
 import numpy as np
 
+l_bound = -600
+u_bound = 600
+
 def func(X):
     agg = np.sum(X**2)/4000
     index = np.arange(1, 1+X.size)
