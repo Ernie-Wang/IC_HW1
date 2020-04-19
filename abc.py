@@ -96,6 +96,6 @@ class ABC():
                 self.bestx = self.X[best_idx]
 
 if __name__ == "__main__":
-    f7 = ABC (dim=30, num=50, max_iter=2500, u_bound=600, l_bound=-600, func=test.func)
-    f7.abc_init()
-    f7.abc_iterator()
+    a = ABC (dim=30, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+    a.abc_init()
+    a.abc_iterator()
