@@ -190,5 +190,5 @@ class GSA():
 
 
 if __name__ == "__main__":
-    f7 = GSA (g_0 = 100, dim=30, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=30, l_bound=-30, func=test.func)
+    f7 = GSA (g_0 = 100, dim=30, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
     f7.gsa_algorithm()
