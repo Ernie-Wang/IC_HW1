@@ -20,14 +20,13 @@ class ABC():
         self.fit = np.zeros((self.SN))                # Food source fitness
         self.trial = np.zeros((self.SN))              # Food source try time
         self.bestx = np.zeros((self.dim))             # Global best position
-        self.best = 1000                              # Global best fitness
+        self.best = 1e10                              # Global best fitness
       
     def abc_init(self):
         # Initialize food source for all employed bees
         for i in range(self.SN):
             self.X[i] = np.random.uniform(self.l_bound,self.u_bound, (self.dim))
             self.fit[i] = self.func(self.X[i])
-
 
     def abc_iterator(self):
         # Iteration
@@ -38,12 +37,14 @@ class ABC():
             for i in range(self.SN):
                 # Random select a source to change but noice that j!= i
                 j = random.choice([n for n in range(self.SN) if i != n])
+                """
                 # Random select a dimension to change
                 k = random.choice(range(0,self.dim))
                 # Employed bee generate new position in the neighborhood of its present food source
                 tmp_pos = self.X[i]
-                change_pos = self.X[i][k] + random.uniform(-1,1) * (self.X[i][k] - self.X[j][k])
-                tmp_pos[k] = change_pos
+                tmp_pos[k] = self.X[i][k] + random.uniform(-1,1) * (self.X[i][k] - self.X[j][k])
+                """
+                tmp_pos = self.X[i] + np.random.uniform(-1,1,(self.dim)) * (self.X[i] - self.X[j])
                 tmp_pos = np.where(tmp_pos > self.u_bound, self.u_bound, tmp_pos)
                 tmp_pos = np.where(tmp_pos < self.l_bound, self.l_bound, tmp_pos)
 
@@ -67,12 +68,14 @@ class ABC():
                 food_source = np.random.choice(self.SN, 1, p=p_source)
                 # Random select a source to change but noice that j!= i
                 j = random.choice([n for n in range(self.SN) if i != n])
+                """
                 # Random select a dimension to change
                 k = random.choice(range(0,self.dim))
                 # Onlooker bee generate new position in the neighborhood of its present food source
                 tmp_pos = self.X[i]
-                change_pos = self.X[i][k] + random.uniform(-1,1) * (self.X[i][k] - self.X[j][k])
-                tmp_pos[k] = change_pos
+                tmp_pos[k] = self.X[i][k] + random.uniform(-1,1) * (self.X[i][k] - self.X[j][k])
+                """
+                tmp_pos = self.X[i] + np.random.uniform(-1,1,(self.dim)) * (self.X[i] - self.X[j])
                 tmp_pos = np.where(tmp_pos > self.u_bound, self.u_bound, tmp_pos)
                 tmp_pos = np.where(tmp_pos < self.l_bound, self.l_bound, tmp_pos)
                 # Calculate new food source fitness
