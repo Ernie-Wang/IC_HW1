@@ -61,6 +61,6 @@ class PSO():
             self.X = tmp_X.copy()
 
 if __name__ == "__main__":
-    f7 = PSO (dim=30,num=50,max_iter=2500, u_bound=30, l_bound=-30, func=test.func)
-    f7.pso_init()
-    f7.pso_iterator()
+    a = PSO (dim=30,num=50,max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+    a.pso_init()
+    a.pso_iterator()
