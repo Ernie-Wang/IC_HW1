@@ -1,7 +1,7 @@
 # Bench mark function 16
 # Six-Hump Camel-Back Function
 # HW dimension: 2
-# Min = −1.031628453489877
+# Min = -1.031628453489877
 # Range [-5,5]
 # Reference: https://al-roomi.org/benchmarks/unconstrained/2-dimensions/23-six-hump-camel-back-function
 
@@ -10,6 +10,8 @@ import numpy as np
 
 l_bound = -5
 u_bound = 5
+dim = 2
+opt = -1.031628453489877
 
 def func(X):
     t1 = 4 * X[0]**2

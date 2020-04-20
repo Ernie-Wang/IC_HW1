@@ -11,6 +11,8 @@ import numpy as np
 
 l_bound = -30
 u_bound = 30
+dim = 30
+opt = 0
 
 def func(X):
     index = np.arange(1, 1+X.size)

@@ -10,6 +10,8 @@ import numpy as np
 
 l_bound = -32.768
 u_bound = 32.768
+dim = 30
+opt = 0
 
 def func(X):
     n = X.size

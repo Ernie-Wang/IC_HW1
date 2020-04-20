@@ -10,6 +10,8 @@ import numpy as np
 
 l_bound = -10
 u_bound = 10
+dim = 30
+opt = 0
 
 def func(X):
     tmp = 0

@@ -10,6 +10,8 @@ import numpy as np
 
 l_bound = -50
 u_bound = 50
+dim = 30
+opt = 0
 
 def u(u_X, a, k, m):
     X = u_X.copy()
