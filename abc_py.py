@@ -22,6 +22,12 @@ class ABC():
         self.bestx = np.zeros((self.dim))             # Global best position
         self.best = 1e10                              # Global best fitness
       
+    def softmax(self, arr):
+        norm1 = arr / np.linalg.norm(arr)
+        inv_arr = -1 * norm1
+        total = np.sum(np.exp(inv_arr))
+        return np.exp(inv_arr)/total
+
     def abc_init(self):
         # Initialize food source for all employed bees
         for i in range(self.SN):
@@ -53,15 +59,13 @@ class ABC():
                 # Greedy selection to select food source
                 if tmp_fit < self.fit[i]:
                     self.X[i] = tmp_pos
+                    self.fit[i] = tmp_fit
                 else:
                     self.trial[i] = self.trial[i] + 1
                     
 
-            # Update new food source fitness
-            self.fit = np.apply_along_axis(self.func, axis=1, arr=self.X)
             # Calculate Selection Probabilities
-            p_source = self.fit/np.sum(self.fit)
-
+            p_source = self.softmax(self.fit)
             # 2. Send onlooker bees
             for i in range(self.SN):
                 # Select Source Site by Roulette Wheel Selection)
@@ -83,6 +87,7 @@ class ABC():
                 # Greedy selection to select food source
                 if tmp_fit < self.fit[food_source]:
                     self.X[food_source] = tmp_pos
+                    self.fit[food_source] = tmp_fit
                 else:
                     self.trial[food_source] = self.trial[food_source] + 1
 
