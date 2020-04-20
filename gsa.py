@@ -3,7 +3,7 @@ import numpy as np
 import random
 import math
 
-from benchmark import F7 as test
+from benchmark import F8 as test
 
 ''' Constant variable '''
 epsilon = 0
@@ -38,16 +38,14 @@ class GSA():
         self.best = 0                                   # The best value of fitness func.
         self.worst = 0                                  # The worst value of fitness func.
         self.fit = np.zeros((self.N))                   # Fitness value of the agent
-
-        self.trial = np.zeros((self.N))                 # Food source try time
-        self.bestx = np.zeros((self.dim))               # Global best position
-        self.best = 1000                                # Global best fitness
+        self.best_results = np.zeros((self.max_iter))                   # Fitness value of the agent
 
     def evaluate(self):
         for i in range(self.N):
             result = self.func(self.X[i])
             if result != 0:
-                self.fit[i] = 1 / abs(result)
+                self.fit[i] = -result
+
 
     def update_v_x_i(self, i):
         for d in range(self.dim):
@@ -70,12 +68,12 @@ class GSA():
     def update_m(self):
         tmp = (self.best - self.worst)
         if tmp == 0:
-            tmp = (self.best + 1) / self.worst
+            tmp = (self.best * 1.00005) / self.worst
         for i in range(self.N):
             if self.fit[i] != self.worst:
                 self.m[i] = (self.fit[i] - self.worst) / tmp
             else:
-                self.m[i] = (self.fit[i] + 0.0001 - self.worst) / tmp
+                self.m[i] = (0.0001) / tmp
     
     def update_A(self):
         for i in range(self.N):
@@ -94,6 +92,9 @@ class GSA():
                 self.best = i
             elif i < self.worst:
                 self.worst = i
+        
+        if self.best == -1 and self.worst == -1:
+            i = 0
     
     def distance(self, a, b):
         dis_2 = 0
@@ -133,7 +134,7 @@ class GSA():
         for i in range(self.N):
             self.total_force_i(i, sort_index)
     
-    def result(self):
+    def result(self, iteration):
         # self.tmp = np.zeros((self.N))                   # Fitness value of the agent
         # for i in range(self.N):
         #     self.tmp[i] = self.func(self.X[i])
@@ -142,8 +143,12 @@ class GSA():
 
         sort_index = np.argsort(self.fit)
         sort_index = np.flip(sort_index)
+        self.best_results[iteration] = self.func(self.X[sort_index[0]])
 
-        print("Best: ",self.X[sort_index[0]], "fitness: ",self.func(self.X[sort_index[0]]) )
+        # print("Best fitness: ",self.func(self.X[sort_index[0]]) )
+        print("Best: ",self.X[sort_index[0]], "fitness: ", self.best_results[iteration])
+        
+        pass
       
     def gsa_init(self):
         # Initialize food source for all employed bees
@@ -179,16 +184,16 @@ class GSA():
         self.update_v_x()
 
 
-    def gsa_algorithm(self):
+    def algorithm(self):
         # Initial
         self.gsa_init()
 
         # iteration
         for iteration in range(self.max_iter):
             self.gsa_iter(iteration)
-            self.result()
+            self.result(iteration)
 
 
 if __name__ == "__main__":
-    f7 = GSA (g_0 = 100, dim=30, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
-    f7.gsa_algorithm()
+    f7 = GSA (g_0 = 10000, dim=30, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+    f7.algorithm()

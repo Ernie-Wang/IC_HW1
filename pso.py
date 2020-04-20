@@ -19,6 +19,7 @@ class PSO():
         self.u_bound = u_bound                        # Upper bound
         self.l_bound = l_bound                        # Lower bound
         self.func = func                              # Benchmark function
+        self.best_results = np.zeros((self.max_iter))                   # Fitness value of the agent
 
     def pso_init(self):
         """ Initialize particle attribute, best position and best value """
@@ -59,6 +60,8 @@ class PSO():
             tmp_X = np.where(tmp_X > self.u_bound, self.u_bound, tmp_X)
             tmp_X = np.where(tmp_X < self.l_bound, self.l_bound, tmp_X)
             self.X = tmp_X.copy()
+
+            self.best_results[ite_idx] = self.gbest_v
 
 if __name__ == "__main__":
     a = PSO (dim=30,num=50,max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
