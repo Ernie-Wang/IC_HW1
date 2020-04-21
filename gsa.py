@@ -10,6 +10,8 @@ epsilon = 0
 RATE = 20
 K_best = 50
 
+end_thres = 1e-5
+
 class GSA():
 
     def __init__(self, g_0, dim, num, rate, k, max_iter, u_bound, l_bound, func, end_thres):
@@ -39,7 +41,7 @@ class GSA():
         self.best = 0                                   # The best value of fitness func.
         self.worst = 0                                  # The worst value of fitness func.
         self.fit = np.zeros((self.N))                   # Fitness value of the agent
-        self.best_sofar = 1000000                       # Record best fitness value so far
+        self.best_sofar = 1000000000                       # Record best fitness value so far
         self.best_results = np.zeros((self.max_iter))                   # Fitness value of the agent
         self.best_results_so_far = np.zeros((self.max_iter))                   # Fitness value of the agent
 
@@ -152,21 +154,20 @@ class GSA():
             self.best_sofar = self.best_results[iteration]
         self.best_results_so_far[iteration] = self.best_sofar
         upper = lower = self.best_results[iteration]
-        # upper = self.best_results[iteration]
-        # lower = self.best_results[iteration]
-        for i in range(20):
-            if upper < self.best_results[iteration - i]:
-                upper = self.best_results[iteration - i]
-
-            elif lower > self.best_results[iteration - i]:
-                lower = self.best_results[iteration - i]
 
         # print("Best fitness: ",self.func(self.X[sort_index[0]]) )
         print("Best: ",self.X[sort_index[0]], "fitness: ", self.best_results[iteration])
-        if(upper-lower) < self.end_thres:
-            return True
-        else:
-            return False
+        if iteration > 100:
+            for i in range(20):
+                if upper < self.best_results[iteration - i]:
+                    upper = self.best_results[iteration - i]
+
+                elif lower > self.best_results[iteration - i]:
+                    lower = self.best_results[iteration - i]
+            if(upper-lower) < self.end_thres:
+                return True
+            else:
+                return False
 
         pass
 
@@ -217,5 +218,5 @@ class GSA():
 
 
 if __name__ == "__main__":
-    f7 = GSA (g_0 = 10000, dim=test.dim, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+    f7 = GSA (g_0 = 10000, dim=test.dim, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
     f7.algorithm()
