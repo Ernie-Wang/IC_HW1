@@ -54,7 +54,7 @@ class GSA():
         for d in range(self.dim):
             self.V[i][d] = random.random() * self.V[i][d] + self.A[i][d]
             self.X[i][d] = self.X[i][d] + self.V[i][d]
-    
+
     def update_v_x(self):
         for i in range(self.N):
             self.update_v_x_i(i)
@@ -77,7 +77,7 @@ class GSA():
                 self.m[i] = (self.fit[i] - self.worst) / tmp
             else:
                 self.m[i] = (0.0001) / tmp
-    
+
     def update_A(self):
         for i in range(self.N):
             for d in range(self.dim):
@@ -95,10 +95,10 @@ class GSA():
                 self.best = i
             elif i < self.worst:
                 self.worst = i
-        
+
         if self.best == -1 and self.worst == -1:
             i = 0
-    
+
     def distance(self, a, b):
         return math.sqrt(np.sum(np.square(a-b)))
         # dis_2 = 0
@@ -106,7 +106,7 @@ class GSA():
         #     tmp = a[d] - b[d]
         #     dis_2 = dis_2 + tmp * tmp
         # return math.sqrt(dis_2)
-    
+
 
     def force_ijd(self, M_1, M_2, d, pre_cal):
         return pre_cal * (self.X[M_2][d] - self.X[M_1][d])
@@ -119,7 +119,7 @@ class GSA():
                     m2_to_m1_f = self.force_ijd(M_1, M_2, d, pre_cal)
                     self.F[M_1][M_2][d] = m2_to_m1_f
                     self.F[M_2][M_1][d] = -m2_to_m1_f
-    
+
     def update_f(self):
         for i in range(self.N):
             self.force_i(i)
@@ -137,7 +137,7 @@ class GSA():
         sort_index = np.flip(sort_index)
         for i in range(self.N):
             self.total_force_i(i, sort_index)
-    
+
     def result(self, iteration):
         # self.tmp = np.zeros((self.N))                   # Fitness value of the agent
         # for i in range(self.N):
@@ -167,9 +167,9 @@ class GSA():
             return True
         else:
             return False
-        
+
         pass
-      
+
     def gsa_init(self):
         # Initialize food source for all employed bees
         for i in range(self.N):
@@ -217,5 +217,5 @@ class GSA():
 
 
 if __name__ == "__main__":
-    f7 = GSA (g_0 = 10000, dim=30, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=1e-8)
+    f7 = GSA (g_0 = 10000, dim=test.dim, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
     f7.algorithm()

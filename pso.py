@@ -2,7 +2,7 @@
 import random
 import numpy as np
 
-from benchmark import F7 as test
+from benchmark import F22 as test
 
 class PSO():
     def __init__(self, dim, num, max_iter, u_bound, l_bound, func):
@@ -64,6 +64,6 @@ class PSO():
             self.best_results[ite_idx] = self.gbest_v
 
 if __name__ == "__main__":
-    a = PSO (dim=30,num=50,max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+    a = PSO (dim=test.dim, num=50,max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
     a.pso_init()
     a.pso_iterator()

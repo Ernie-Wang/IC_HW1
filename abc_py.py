@@ -105,6 +105,6 @@ class ABC():
                 self.bestx = self.X[best_idx]
 
 if __name__ == "__main__":
-    a = ABC (dim=30, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+    a = ABC (dim=test.dim, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
     a.abc_init()
     a.abc_iterator()
