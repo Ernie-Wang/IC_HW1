@@ -64,16 +64,18 @@ if __name__ == "__main__":
             ###########################
 
             #########   GSA   #########
-            algo = GSA (g_0 = G_0, dim=30, num=AGENT_NUM, rate=ALPHA, k=K_best, max_iter=ITER[kind], u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
-            algo.algorithm()
+            # algo = GSA (g_0 = G_0, dim=30, num=AGENT_NUM, rate=ALPHA, k=K_best, max_iter=ITER[kind], u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
+            # algo.algorithm()
             ###########################
 
             #########   ABC   #########
-            
+            algo = ABC (dim=test.dim, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+            algo.abc_init()
+            algo.abc_iterator()
             ###########################
 
             # Resize the result to 2500
-            tmp = algo.best_results_so_far.copy()
+            tmp = algo.best_results.copy()
             tmp.resize(2500)
             RESULTS[run][kind] = tmp.copy()
 

@@ -2,7 +2,7 @@
 import numpy as np
 import random
 
-from benchmark import F7 as test
+from benchmark import F6 as test
 
 class ABC():
 
@@ -21,6 +21,7 @@ class ABC():
         self.trial = np.zeros((self.SN))              # Food source try time
         self.bestx = np.zeros((self.dim))             # Global best position
         self.best = 1e10                              # Global best fitness
+        self.best_results = np.zeros((self.max_iter)) # Fitness value of the agent
       
     def softmax(self, arr):
         norm1 = arr / np.linalg.norm(arr)
@@ -103,6 +104,8 @@ class ABC():
             if self.fit[best_idx] < self.best:
                 self.best = self.fit[best_idx]
                 self.bestx = self.X[best_idx]
+            
+            self.best_results[ite_idx] = self.best
 
 if __name__ == "__main__":
     a = ABC (dim=test.dim, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
