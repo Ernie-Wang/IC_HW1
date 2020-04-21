@@ -11,7 +11,7 @@ from benchmark import F6 as test
 ''' Constant variable '''
 
 ######## Global variable #########
-RUNS = 50
+RUNS = 1
 AGENT_NUM = 50
 ITER_KINDS = 2
 ITER = [500, 2500]
@@ -29,6 +29,7 @@ epsilon = 0
 G_0 = 100
 ALPHA = 20
 K_best = 50
+end_thres = 1e-5
 ##################################
 
 ######### ABC variable ###########
@@ -63,7 +64,7 @@ if __name__ == "__main__":
             ###########################
 
             #########   GSA   #########
-            algo = GSA (g_0 = G_0, dim=30, num=AGENT_NUM, rate=ALPHA, k=K_best, max_iter=ITER[kind], u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+            algo = GSA (g_0 = G_0, dim=30, num=AGENT_NUM, rate=ALPHA, k=K_best, max_iter=ITER[kind], u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
             algo.algorithm()
             ###########################
 
@@ -72,7 +73,7 @@ if __name__ == "__main__":
             ###########################
 
             # Resize the result to 2500
-            tmp = algo.best_results.copy()
+            tmp = algo.best_results_so_far.copy()
             tmp.resize(2500)
             RESULTS[run][kind] = tmp.copy()
 

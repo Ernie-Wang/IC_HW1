@@ -3,7 +3,7 @@ import numpy as np
 import random
 import math
 
-from benchmark import F8 as test
+from benchmark import F6 as test
 
 ''' Constant variable '''
 epsilon = 0
@@ -12,7 +12,7 @@ K_best = 50
 
 class GSA():
 
-    def __init__(self, g_0, dim, num, rate, k, max_iter, u_bound, l_bound, func):
+    def __init__(self, g_0, dim, num, rate, k, max_iter, u_bound, l_bound, func, end_thres):
         """ Initialize GSA object """
         self.G = g_0 + g_0 * rate                       # Gravity of the algorithm
         self.G_0 = g_0                                  # Initial Gravity of the algorithm
@@ -27,6 +27,7 @@ class GSA():
         self.u_bound = u_bound                          # Upper bound
         self.l_bound = l_bound                          # Lower bound
         self.func = func                                # Benchmark function
+        self.end_thres = end_thres                      # Threshold to terminate algorithm
 
         self.M = np.zeros((self.N))                     # Mess of the agent
         self.m = np.zeros((self.N))                     # Mess calculate by fitness
@@ -38,7 +39,9 @@ class GSA():
         self.best = 0                                   # The best value of fitness func.
         self.worst = 0                                  # The worst value of fitness func.
         self.fit = np.zeros((self.N))                   # Fitness value of the agent
+        self.best_sofar = 1000000                       # Record best fitness value so far
         self.best_results = np.zeros((self.max_iter))                   # Fitness value of the agent
+        self.best_results_so_far = np.zeros((self.max_iter))                   # Fitness value of the agent
 
     def evaluate(self):
         for i in range(self.N):
@@ -97,11 +100,12 @@ class GSA():
             i = 0
     
     def distance(self, a, b):
-        dis_2 = 0
-        for d in range(self.dim):
-            tmp = a[d] - b[d]
-            dis_2 = dis_2 + tmp * tmp
-        return math.sqrt(dis_2)
+        return math.sqrt(np.sum(np.square(a-b)))
+        # dis_2 = 0
+        # for d in range(self.dim):
+        #     tmp = a[d] - b[d]
+        #     dis_2 = dis_2 + tmp * tmp
+        # return math.sqrt(dis_2)
     
 
     def force_ijd(self, M_1, M_2, d, pre_cal):
@@ -144,9 +148,25 @@ class GSA():
         sort_index = np.argsort(self.fit)
         sort_index = np.flip(sort_index)
         self.best_results[iteration] = self.func(self.X[sort_index[0]])
+        if self.best_sofar > self.best_results[iteration]:
+            self.best_sofar = self.best_results[iteration]
+        self.best_results_so_far[iteration] = self.best_sofar
+        upper = lower = self.best_results[iteration]
+        # upper = self.best_results[iteration]
+        # lower = self.best_results[iteration]
+        for i in range(20):
+            if upper < self.best_results[iteration - i]:
+                upper = self.best_results[iteration - i]
+
+            elif lower > self.best_results[iteration - i]:
+                lower = self.best_results[iteration - i]
 
         # print("Best fitness: ",self.func(self.X[sort_index[0]]) )
         print("Best: ",self.X[sort_index[0]], "fitness: ", self.best_results[iteration])
+        if(upper-lower) < self.end_thres:
+            return True
+        else:
+            return False
         
         pass
       
@@ -191,9 +211,11 @@ class GSA():
         # iteration
         for iteration in range(self.max_iter):
             self.gsa_iter(iteration)
-            self.result(iteration)
+            end = self.result(iteration)
+            if end:
+                break
 
 
 if __name__ == "__main__":
-    f7 = GSA (g_0 = 10000, dim=30, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+    f7 = GSA (g_0 = 10000, dim=30, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=1e-8)
     f7.algorithm()
