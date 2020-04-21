@@ -2,7 +2,7 @@
 import random
 import numpy as np
 
-from benchmark import F22 as test
+from benchmark import F16 as test
 
 class PSO():
     def __init__(self, dim, num, max_iter, u_bound, l_bound, func):
@@ -21,18 +21,28 @@ class PSO():
         self.func = func                              # Benchmark function
         self.best_results = np.zeros((self.max_iter))                   # Fitness value of the agent
 
-    def pso_init(self):
+    def pso_init(self, X=None):
         """ Initialize particle attribute, best position and best value """
-        for n in range(self.num):
-            for d in range(self.dim):
-                self.X[n][d] = random.uniform(self.l_bound,self.u_bound)
-                self.V[n][d] = random.uniform(-1,1)
-            self.pbest[n] = self.X[n].copy()
-            self.pbest_v[n] = self.func(self.pbest[n])
+        if X is None:
+            for n in range(self.num):
+                for d in range(self.dim):
+                    self.X[n][d] = random.uniform(self.l_bound,self.u_bound)
+                    self.V[n][d] = random.uniform(-1,1)
+                self.pbest[n] = self.X[n].copy()
+                self.pbest_v[n] = self.func(self.pbest[n])
+        else:
+            if X.shape == self.X.shape:
+                self.X = X.copy()
+                self.V = np.random.uniform(self.l_bound,self.u_bound, (self.num, self.dim))
+                self.pbest = self.X.copy()
+                self.pbest_v = np.apply_along_axis(test.func, axis=1, arr=self.X)
+            else:
+                raise Exception("Custom data shape error")
 
-            if self.pbest_v[n] < self.gbest_v:
-                self.gbest_v = self.pbest_v[n]
-                self.gbest = self.pbest[n].copy()
+        best_idx = np.argmin(self.pbest_v)
+        if self.pbest_v[best_idx] < self.gbest_v:
+            self.gbest_v = self.pbest_v[best_idx]
+            self.gbest = self.pbest[best_idx].copy()
 
     def pso_iterator(self):
         """ Iteration """
@@ -65,5 +75,6 @@ class PSO():
 
 if __name__ == "__main__":
     a = PSO (dim=test.dim, num=50,max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
-    a.pso_init()
+    arr = np.random.uniform(test.l_bound,test.u_bound, (50, test.dim))
+    a.pso_init(arr)
     a.pso_iterator()

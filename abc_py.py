@@ -33,11 +33,19 @@ class ABC():
         total = np.sum(np.exp(inv_arr))
         return np.exp(inv_arr)/total
 
-    def abc_init(self):
+    def abc_init(self, X=None):
         # Initialize food source for all employed bees
-        for i in range(self.SN):
-            self.X[i] = np.random.uniform(self.l_bound,self.u_bound, (self.dim))
-            self.fit[i] = self.func(self.X[i])
+        if X is None:
+            for i in range(self.SN):
+                self.X[i] = np.random.uniform(self.l_bound,self.u_bound, (self.dim))
+                self.fit[i] = self.func(self.X[i])
+        else:
+            if X.shape == self.X.shape:
+               self.X = X.copy()
+               self.fit = np.apply_along_axis(self.func, axis=1, arr=self.X)
+            else:
+                raise Exception("Custom data shape error")
+
         best_idx = np.argmin(self.fit)
         self.best = self.fit[best_idx]
 
@@ -50,13 +58,6 @@ class ABC():
             for i in range(self.SN):
                 # Random select a source to change but noice that j!= i
                 j = random.choice([n for n in range(self.SN) if i != n])
-                """
-                # Random select a dimension to change
-                k = random.choice(range(0,self.dim))
-                # Employed bee generate new position in the neighborhood of its present food source
-                tmp_pos = self.X[i]
-                tmp_pos[k] = self.X[i][k] + random.uniform(-1,1) * (self.X[i][k] - self.X[j][k])
-                """
                 tmp_pos = self.X[i] + np.random.uniform(-1,1,(self.dim)) * (self.X[i] - self.X[j])
                 tmp_pos = np.where(tmp_pos > self.u_bound, self.u_bound, tmp_pos)
                 tmp_pos = np.where(tmp_pos < self.l_bound, self.l_bound, tmp_pos)
@@ -79,13 +80,6 @@ class ABC():
                 food_source = np.random.choice(self.SN, 1, p=p_source)
                 # Random select a source to change but noice that j!= i
                 j = random.choice([n for n in range(self.SN) if i != n])
-                """
-                # Random select a dimension to change
-                k = random.choice(range(0,self.dim))
-                # Onlooker bee generate new position in the neighborhood of its present food source
-                tmp_pos = self.X[i]
-                tmp_pos[k] = self.X[i][k] + random.uniform(-1,1) * (self.X[i][k] - self.X[j][k])
-                """
                 tmp_pos = self.X[i] + np.random.uniform(-1,1,(self.dim)) * (self.X[i] - self.X[j])
                 tmp_pos = np.where(tmp_pos > self.u_bound, self.u_bound, tmp_pos)
                 tmp_pos = np.where(tmp_pos < self.l_bound, self.l_bound, tmp_pos)
@@ -113,7 +107,9 @@ class ABC():
             
             self.best_record.append(self.best)
 
+
 if __name__ == "__main__":
     a = ABC (dim=test.dim, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
-    a.abc_init()
+    arr = np.random.uniform(test.l_bound,test.u_bound, (50, test.dim))
+    a.abc_init(arr)
     a.abc_iterator()
