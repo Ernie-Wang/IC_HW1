@@ -20,10 +20,15 @@ class ABC():
         self.fit = np.zeros((self.SN))                # Food source fitness
         self.trial = np.zeros((self.SN))              # Food source try time
         self.bestx = np.zeros((self.dim))             # Global best position
-        self.best = 1e10                              # Global best fitness
-      
+        self.best = 1000                              # Global best fitness
+        self.best_record = []                         # Recorded best sequence
+
     def softmax(self, arr):
-        norm1 = arr / np.linalg.norm(arr)
+        nm = np.linalg.norm(arr)
+        if nm == 0:
+          norm1 = arr / arr.size
+        else:
+          norm1 = arr / nm
         inv_arr = -1 * norm1
         total = np.sum(np.exp(inv_arr))
         return np.exp(inv_arr)/total
@@ -33,6 +38,8 @@ class ABC():
         for i in range(self.SN):
             self.X[i] = np.random.uniform(self.l_bound,self.u_bound, (self.dim))
             self.fit[i] = self.func(self.X[i])
+        best_idx = np.argmin(self.fit)
+        self.best = self.fit[best_idx]
 
     def abc_iterator(self):
         # Iteration
@@ -103,6 +110,8 @@ class ABC():
             if self.fit[best_idx] < self.best:
                 self.best = self.fit[best_idx]
                 self.bestx = self.X[best_idx]
+            
+            self.best_record.append(self.best)
 
 if __name__ == "__main__":
     a = ABC (dim=test.dim, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
