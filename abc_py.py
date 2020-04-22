@@ -4,9 +4,10 @@ import random
 
 # from benchmark import F6 as test
 
+end_thres = 1e-5
 class ABC():
 
-    def __init__(self, dim, num, max_iter, u_bound, l_bound, func):
+    def __init__(self, dim, num, max_iter, u_bound, l_bound, func, end_thres):
         """ Initialize ABC object """
         self.SN = num                                 # Number of onlooker bees / enployed bees
         self.dim = dim                                # Searching dimension
@@ -15,6 +16,7 @@ class ABC():
         self.u_bound = u_bound                        # Upper bound
         self.l_bound = l_bound                        # Lower bound
         self.func = func                              # Benchmark function
+        self.end_thres = end_thres                    # Terminate threshold
 
         self.X = np.zeros((self.SN, self.dim))        # Food source position
         self.fit = np.zeros((self.SN))                # Food source fitness
@@ -33,6 +35,21 @@ class ABC():
         inv_arr = -1 * norm1
         total = np.sum(np.exp(inv_arr))
         return np.exp(inv_arr)/total
+
+    def triger(self, iteration):
+        upper = lower = self.best_results[iteration]
+        if iteration > 100:
+            for i in range(20):
+                if upper < self.best_results[iteration - i]:
+                    upper = self.best_results[iteration - i]
+
+                elif lower > self.best_results[iteration - i]:
+                    lower = self.best_results[iteration - i]
+            if(upper-lower) < self.end_thres:
+                self.best_results[iteration:] = self.best_results[iteration]
+                return True
+            else:
+                return False
 
     def abc_init(self, X=None):
         # Initialize food source for all employed bees
@@ -108,9 +125,11 @@ class ABC():
             
             self.best_results[ite_idx] = self.best
 
+            if self.triger(ite_idx):
+                break
 
 if __name__ == "__main__":
-    a = ABC (dim=test.dim, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+    a = ABC (dim=test.dim, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
     arr = np.random.uniform(test.l_bound,test.u_bound, (50, test.dim))
     a.abc_init(arr)
     a.abc_iterator()

@@ -4,8 +4,9 @@ import numpy as np
 
 # from benchmark import F16 as test
 
+end_thres = 1e-5
 class PSO():
-    def __init__(self, dim, num, max_iter, u_bound, l_bound, func):
+    def __init__(self, dim, num, max_iter, u_bound, l_bound, func, end_thres):
         """ Initialize PSO object """
         self.dim = dim                                # Searching dimension
         self.num = num                                # Number of particle
@@ -19,7 +20,24 @@ class PSO():
         self.u_bound = u_bound                        # Upper bound
         self.l_bound = l_bound                        # Lower bound
         self.func = func                              # Benchmark function
+        self.end_thres = end_thres                    # Terminate threshold
         self.best_results = np.zeros((self.max_iter))                   # Fitness value of the agent
+
+    def triger(self, iteration):
+        upper = lower = self.best_results[iteration]
+        if iteration > 100:
+            for i in range(20):
+                if upper < self.best_results[iteration - i]:
+                    upper = self.best_results[iteration - i]
+
+                elif lower > self.best_results[iteration - i]:
+                    lower = self.best_results[iteration - i]
+            if(upper-lower) < self.end_thres:
+                self.best_results[iteration:] = self.best_results[iteration]
+                # self.best_results[iteration:] = 100
+                return True
+            else:
+                return False
 
     def pso_init(self, X=None):
         """ Initialize particle attribute, best position and best value """
@@ -74,8 +92,11 @@ class PSO():
             print(self.gbest)
             self.best_results[ite_idx] = self.gbest_v
 
+            if self.triger(ite_idx):
+                break
+
 if __name__ == "__main__":
-    a = PSO (dim=test.dim, num=50,max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+    a = PSO (dim=test.dim, num=50,max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
     arr = np.random.uniform(test.l_bound,test.u_bound, (50, test.dim))
     a.pso_init(arr)
     a.pso_iterator()

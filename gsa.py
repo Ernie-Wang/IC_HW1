@@ -144,6 +144,22 @@ class GSA():
         for i in range(self.N):
             self.total_force_i(i, sort_index)
 
+    def triger(self, iteration):
+        upper = lower = self.best_results[iteration]
+        if iteration > 100:
+            for i in range(20):
+                if upper < self.best_results[iteration - i]:
+                    upper = self.best_results[iteration - i]
+
+                elif lower > self.best_results[iteration - i]:
+                    lower = self.best_results[iteration - i]
+            if(upper-lower) < self.end_thres:
+                self.best_results[iteration:] = self.best_results[iteration]
+                return True
+            else:
+                return False
+
+
     def result(self, iteration):
         # self.tmp = np.zeros((self.N))                   # Fitness value of the agent
         # for i in range(self.N):
@@ -157,21 +173,21 @@ class GSA():
         if self.best_sofar > self.best_results[iteration]:
             self.best_sofar = self.best_results[iteration]
         self.best_results_so_far[iteration] = self.best_sofar
-        upper = lower = self.best_results[iteration]
 
         # print("Best fitness: ",self.func(self.X[sort_index[0]]) )
         print("Best: ",self.X[sort_index[0]], "fitness: ", self.best_results[iteration])
-        if iteration > 100:
-            for i in range(20):
-                if upper < self.best_results[iteration - i]:
-                    upper = self.best_results[iteration - i]
+        # if iteration > 100:
+        #     for i in range(20):
+        #         if upper < self.best_results[iteration - i]:
+        #             upper = self.best_results[iteration - i]
 
-                elif lower > self.best_results[iteration - i]:
-                    lower = self.best_results[iteration - i]
-            if(upper-lower) < self.end_thres:
-                return True
-            else:
-                return False
+        #         elif lower > self.best_results[iteration - i]:
+        #             lower = self.best_results[iteration - i]
+        #     if(upper-lower) < self.end_thres:
+        #         return True
+        #     else:
+        #         return False
+        return self.triger(iteration)
 
         pass
 
