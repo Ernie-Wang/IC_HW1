@@ -56,6 +56,10 @@ class GSA():
         for d in range(self.dim):
             self.V[i][d] = random.random() * self.V[i][d] + self.A[i][d]
             self.X[i][d] = self.X[i][d] + self.V[i][d]
+            if self.X[i][d] < self.l_bound:
+                self.X[i][d] = self.l_bound
+            elif self.X[i][d] > self.u_bound:
+                self.X[i][d] = self.u_bound
 
     def update_v_x(self):
         for i in range(self.N):
