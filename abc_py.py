@@ -2,7 +2,7 @@
 import numpy as np
 import random
 
-from benchmark import F6 as test
+# from benchmark import F6 as test
 
 class ABC():
 

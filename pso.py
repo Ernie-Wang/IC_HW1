@@ -2,7 +2,7 @@
 import random
 import numpy as np
 
-from benchmark import F16 as test
+# from benchmark import F16 as test
 
 class PSO():
     def __init__(self, dim, num, max_iter, u_bound, l_bound, func):
@@ -35,7 +35,7 @@ class PSO():
                 self.X = X.copy()
                 self.V = np.random.uniform(self.l_bound,self.u_bound, (self.num, self.dim))
                 self.pbest = self.X.copy()
-                self.pbest_v = np.apply_along_axis(test.func, axis=1, arr=self.X)
+                self.pbest_v = np.apply_along_axis(self.func, axis=1, arr=self.X)
             else:
                 raise Exception("Custom data shape error")
 

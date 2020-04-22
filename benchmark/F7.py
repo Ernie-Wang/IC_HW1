@@ -13,11 +13,12 @@ l_bound = -30
 u_bound = 30
 dim = 30
 opt = 0
+RAND_CONST = random.random()
 
 def func(X):
     index = np.arange(1, 1+X.size)
     f_term = np.sum(np.multiply(index, X**4))
-    tmp = f_term + random.random()
+    tmp = f_term + RAND_CONST
     return tmp
 
 if __name__ == '__main__':

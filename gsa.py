@@ -3,7 +3,7 @@ import numpy as np
 import random
 import math
 
-from benchmark import F6 as test
+# from benchmark import F6 as test
 
 ''' Constant variable '''
 epsilon = 0
