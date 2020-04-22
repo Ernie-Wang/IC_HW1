@@ -8,6 +8,7 @@
 import math
 import numpy as np
 
+name = "F22"
 l_bound = 0
 u_bound = 10
 dim = 4

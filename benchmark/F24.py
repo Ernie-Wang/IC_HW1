@@ -8,6 +8,7 @@
 import math
 import numpy as np
 
+name = "F24"
 l_bound = -32.768
 u_bound = 32.768
 dim = 30

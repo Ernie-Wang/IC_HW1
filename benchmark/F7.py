@@ -9,6 +9,7 @@ import math
 import random
 import numpy as np
 
+name = "F7"
 l_bound = -30
 u_bound = 30
 dim = 30

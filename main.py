@@ -1,6 +1,5 @@
 import numpy as np
-import random
-import math
+import csv
 from matplotlib import pyplot as plt
 
 from pso import PSO
@@ -11,7 +10,7 @@ from benchmark import F6 as test
 ''' Constant variable '''
 
 ######## Global variable #########
-RUNS = 1
+RUNS = 50
 AGENT_NUM = 50
 ITER_KINDS = 2
 ALGO = 3
@@ -36,13 +35,24 @@ end_thres = 1e-5
 ######### ABC variable ###########
 
 ##################################
+def write_file():
+    filename = "./result_csv/Total_{func}.csv".format(func=test.name)
+    with open(filename, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Iter', 'PSO500', 'GSA500', 'ABC500', 'PSO2500', 'GSA2500', 'ABC2500'])
+        for i in range(ITER[1]):
+            if i < ITER[0]:
+                writer.writerow([i+1, AVERAGE_RESULT[0][0][i], AVERAGE_RESULT[1][0][i], AVERAGE_RESULT[2][0][i], AVERAGE_RESULT[0][1][i], AVERAGE_RESULT[1][1][i], AVERAGE_RESULT[2][1][i]])
+    pass
 
 def plot_result():
     x1 = np.arange(0,  500,  1) 
     x2 = np.arange(0,  2500,  1) 
     plt.figure(1)
     # plt.subplot(3,  1,  1)  
-    plt.title("ITER 500") 
+
+    title = "{func}, ITER=500".format(func=test.name)
+    plt.title(title) 
     plt.xlabel("iter") 
     plt.ylabel("fitness") 
     for i in range(ALGO):
@@ -52,7 +62,9 @@ def plot_result():
 
     plt.figure(2)
     # plt.subplot(3,  1,  3)  
-    plt.title("ITER 2500") 
+
+    title = "{func}, ITER=2500".format(func=test.name)
+    plt.title(title) 
     plt.xlabel("iter") 
     plt.ylabel("fitness") 
     for i in range(ALGO):
@@ -106,4 +118,5 @@ if __name__ == "__main__":
                 
                 average = average + RESULTS[algo][run][kind]
             AVERAGE_RESULT[algo][kind] = average / RUNS
+    write_file()
     plot_result()

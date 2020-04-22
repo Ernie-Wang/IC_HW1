@@ -8,6 +8,7 @@
 import math
 import numpy as np
 
+name = "F16"
 l_bound = -5
 u_bound = 5
 dim = 2

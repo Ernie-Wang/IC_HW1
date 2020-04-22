@@ -8,6 +8,7 @@
 import math
 import numpy as np
 
+name = "F6"
 l_bound = -10
 u_bound = 10
 dim = 30

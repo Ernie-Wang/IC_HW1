@@ -8,6 +8,7 @@
 import math
 import numpy as np
 
+name = "F11"
 l_bound = -600
 u_bound = 600
 dim = 30

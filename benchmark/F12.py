@@ -8,6 +8,7 @@
 import math
 import numpy as np
 
+name = "F12"
 l_bound = -50
 u_bound = 50
 dim = 30
