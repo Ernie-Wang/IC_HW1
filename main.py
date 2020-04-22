@@ -67,7 +67,7 @@ if __name__ == "__main__":
             arr = np.random.uniform(test.l_bound,test.u_bound, (AGENT_NUM, test.dim))
 
             #########   PSO   #########
-            algo = PSO (dim=test.dim,num=AGENT_NUM,max_iter=ITER[kind], u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+            algo = PSO (dim=test.dim,num=AGENT_NUM,max_iter=ITER[kind], u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
             algo.pso_init(arr)
             algo.pso_iterator()
 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
             ###########################
 
             #########   ABC   #########
-            algo = ABC (dim=test.dim, num=AGENT_NUM, max_iter=ITER[kind], u_bound=test.u_bound, l_bound=test.l_bound, func=test.func)
+            algo = ABC (dim=test.dim, num=AGENT_NUM, max_iter=ITER[kind], u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
             algo.abc_init(arr)
             algo.abc_iterator()
 
