@@ -71,6 +71,7 @@ class PSO():
             tmp_X = np.where(tmp_X < self.l_bound, self.l_bound, tmp_X)
             self.X = tmp_X.copy()
 
+            print(self.gbest)
             self.best_results[ite_idx] = self.gbest_v
 
 if __name__ == "__main__":
