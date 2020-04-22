@@ -171,11 +171,25 @@ class GSA():
 
         pass
 
-    def gsa_init(self):
+    # def gsa_init(self):
+    #     # Initialize food source for all employed bees
+    #     for i in range(self.N):
+    #         self.X[i] = np.random.uniform(self.l_bound,self.u_bound, (self.dim))
+    #         self.fit[i] = self.func(self.X[i])
+
+    def gsa_init(self, X=None):
         # Initialize food source for all employed bees
-        for i in range(self.N):
-            self.X[i] = np.random.uniform(self.l_bound,self.u_bound, (self.dim))
-            self.fit[i] = self.func(self.X[i])
+        if X is None:
+            for i in range(self.N):
+                self.X[i] = np.random.uniform(self.l_bound,self.u_bound, (self.dim))
+                self.fit[i] = self.func(self.X[i])
+        else:
+            if X.shape == self.X.shape:
+               self.X = X.copy()
+               self.fit = np.apply_along_axis(self.func, axis=1, arr=self.X)
+            else:
+                raise Exception("Custom data shape error")
+
 
     '''
     One Iteration of the gsa algorithm
@@ -205,9 +219,9 @@ class GSA():
         self.update_v_x()
 
 
-    def algorithm(self):
+    def algorithm(self, arr):
         # Initial
-        self.gsa_init()
+        self.gsa_init(arr)
 
         # iteration
         for iteration in range(self.max_iter):
@@ -219,4 +233,5 @@ class GSA():
 
 if __name__ == "__main__":
     f7 = GSA (g_0 = 10000, dim=test.dim, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
-    f7.algorithm()
+    arr = np.random.uniform(test.l_bound,test.u_bound, (50, test.dim))
+    f7.algorithm(arr)
