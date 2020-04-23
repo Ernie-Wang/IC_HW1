@@ -3,7 +3,7 @@ import numpy as np
 import random
 import math
 
-# from benchmark import F6 as test
+# from benchmark import F8 as test
 
 ''' Constant variable '''
 epsilon = 0
@@ -155,6 +155,8 @@ class GSA():
                     lower = self.best_results[iteration - i]
             if(upper-lower) < self.end_thres:
                 self.best_results[iteration:] = self.best_results[iteration]
+                self.best_results_so_far[iteration:] = self.best_results_so_far[iteration]
+                print(self.best_results_so_far[2000])
                 return True
             else:
                 return False
