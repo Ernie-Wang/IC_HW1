@@ -351,3 +351,9 @@ MigrationBackup/
 
 # Apple macOS custom attribute file
 *.DS_Store
+
+# VScode cache
+*.vscode
+
+# Jupyter notebook checkpoint
+*.ipynb_checkpoints
