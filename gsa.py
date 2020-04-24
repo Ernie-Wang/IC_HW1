@@ -156,7 +156,7 @@ class GSA():
             if(upper-lower) < self.end_thres:
                 self.best_results[iteration:] = self.best_results[iteration]
                 self.best_results_so_far[iteration:] = self.best_results_so_far[iteration]
-                print(self.best_results_so_far[2000])
+                #print(self.best_results_so_far[2000])
                 return True
             else:
                 return False
