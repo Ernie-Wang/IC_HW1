@@ -163,12 +163,6 @@ class GSA():
 
 
     def result(self, iteration):
-        # self.tmp = np.zeros((self.N))                   # Fitness value of the agent
-        # for i in range(self.N):
-        #     self.tmp[i] = self.func(self.X[i])
-        # print("Best_fitness: ", 1/self.best)
-        # print("Total: ", self.tmp)
-
         sort_index = np.argsort(self.fit)
         sort_index = np.flip(sort_index)
         self.best_results[iteration] = self.func(self.X[sort_index[0]])
@@ -178,20 +172,8 @@ class GSA():
 
         # print("Best fitness: ",self.func(self.X[sort_index[0]]) )
         print("Best: ",self.X[sort_index[0]], "fitness: ", self.best_results[iteration])
-        # if iteration > 100:
-        #     for i in range(20):
-        #         if upper < self.best_results[iteration - i]:
-        #             upper = self.best_results[iteration - i]
-
-        #         elif lower > self.best_results[iteration - i]:
-        #             lower = self.best_results[iteration - i]
-        #     if(upper-lower) < self.end_thres:
-        #         return True
-        #     else:
-        #         return False
         return self.triger(iteration)
 
-        pass
 
     # def gsa_init(self):
     #     # Initialize food source for all employed bees

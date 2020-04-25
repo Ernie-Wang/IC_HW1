@@ -17,6 +17,7 @@ ALGO = 3
 ITER = [500, 2500]
 RESULTS = np.zeros((ALGO, RUNS, ITER_KINDS, ITER[1]))                   # Store all the result for the whole runs
 AVERAGE_RESULT = np.zeros((ALGO, ITER_KINDS, ITER[1]))                   # Store all the result for the whole runs
+init_best = np.zeros((ITER_KINDS))                   # Store all the result for the whole runs
 
 ##################################
 
@@ -40,14 +41,17 @@ def write_file():
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['Iter', 'PSO500', 'GSA500', 'ABC500', 'PSO2500', 'GSA2500', 'ABC2500'])
+        writer.writerow([0, init_best[0], init_best[0], init_best[0], init_best[1], init_best[1], init_best[1]])
         for i in range(ITER[1]):
             if i < ITER[0]:
                 writer.writerow([i+1, AVERAGE_RESULT[0][0][i], AVERAGE_RESULT[1][0][i], AVERAGE_RESULT[2][0][i], AVERAGE_RESULT[0][1][i], AVERAGE_RESULT[1][1][i], AVERAGE_RESULT[2][1][i]])
+            else:
+                writer.writerow([i+1, '', '', '', AVERAGE_RESULT[0][1][i], AVERAGE_RESULT[1][1][i], AVERAGE_RESULT[2][1][i]])
     pass
 
 def plot_result():
-    x1 = np.arange(0,  500,  1) 
-    x2 = np.arange(0,  2500,  1) 
+    x1 = np.arange(0,  501,  1) 
+    x2 = np.arange(0,  2501,  1) 
     plt.figure(1)
     # plt.subplot(3,  1,  1)  
 
@@ -56,9 +60,11 @@ def plot_result():
     plt.xlabel("iter") 
     plt.ylabel("fitness") 
     for i in range(ALGO):
-      tmp = AVERAGE_RESULT[i][0].copy()
-      tmp.resize(ITER[0])
-      plt.plot(x1, tmp) 
+        
+        temp = AVERAGE_RESULT[i][0].copy()
+        temp.resize(ITER[0], refcheck=False)
+        temp = np.insert(temp, 1, init_best[0], 0)
+        plt.plot(x1, temp) 
 
     plt.figure(2)
     # plt.subplot(3,  1,  3)  
@@ -68,7 +74,9 @@ def plot_result():
     plt.xlabel("iter") 
     plt.ylabel("fitness") 
     for i in range(ALGO):
-      plt.plot(x2, AVERAGE_RESULT[i][1]) 
+        temp = AVERAGE_RESULT[i][1].copy()
+        temp = np.insert(temp, 0, init_best[1])
+        plt.plot(x2, temp)
     plt.show()
 
 if __name__ == "__main__":
@@ -77,6 +85,10 @@ if __name__ == "__main__":
             
             ## Initial random variables, every algorithm has same initial
             arr = np.random.uniform(test.l_bound,test.u_bound, (AGENT_NUM, test.dim))
+            init_result = np.apply_along_axis(test.func, axis=1, arr=arr)
+            best_idx = np.argmin(init_result)
+
+            init_best[kind] = init_best[kind] + init_result[best_idx].copy()/RUNS
 
             #########   PSO   #########
             algo = PSO (dim=test.dim,num=AGENT_NUM,max_iter=ITER[kind], u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
@@ -94,7 +106,7 @@ if __name__ == "__main__":
             algo.algorithm(arr)
 
             # Resize the result to 2500
-            tmp = algo.best_results_so_far.copy()
+            # tmp = algo.best_results_so_far.copy()
             tmp.resize(2500)
             RESULTS[1][run][kind] = tmp.copy()
             ###########################
