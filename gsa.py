@@ -3,10 +3,10 @@ import numpy as np
 import random
 import math
 
-# from benchmark import F8 as test
+from benchmark import F16 as test
 
 ''' Constant variable '''
-epsilon = 0
+epsilon = 1e-5
 RATE = 20
 K_best = 50
 
@@ -254,6 +254,6 @@ class GSA():
 
 
 if __name__ == "__main__":
-    f7 = GSA (g_0 = 10000, dim=test.dim, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
+    f7 = GSA (g_0 = 100, dim=test.dim, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
     arr = np.random.uniform(test.l_bound,test.u_bound, (50, test.dim))
     f7.algorithm(arr)
