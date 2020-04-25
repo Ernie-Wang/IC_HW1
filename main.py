@@ -25,7 +25,7 @@ AVERAGE_RESULT = np.zeros((ALGO, ITER_KINDS, ITER[1]))                   # Store
 ##################################
 
 ######### GSA variable ###########
-epsilon = 0
+epsilon = 1e-5
 G_0 = 100
 ALPHA = 20
 K_best = 50

@@ -3,7 +3,7 @@ import numpy as np
 import random
 import math
 
-from benchmark import F16 as test
+# from benchmark import F22 as test
 
 ''' Constant variable '''
 epsilon = 1e-5
