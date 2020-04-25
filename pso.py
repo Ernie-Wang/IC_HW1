@@ -58,9 +58,8 @@ class PSO():
                 raise Exception("Custom data shape error")
 
         best_idx = np.argmin(self.pbest_v)
-        if self.pbest_v[best_idx] < self.gbest_v:
-            self.gbest_v = self.pbest_v[best_idx]
-            self.gbest = self.pbest[best_idx].copy()
+        self.gbest_v = self.pbest_v[best_idx]
+        self.gbest = self.pbest[best_idx].copy()
 
     def pso_iterator(self):
         """ Iteration """
