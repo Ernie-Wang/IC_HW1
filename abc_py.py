@@ -128,8 +128,17 @@ class ABC():
             if self.triger(ite_idx):
                 break
 
+    def get_current_fitness(self):
+        """ Get current fitness of each agent """
+        return np.apply_along_axis(self.func, axis=1, arr=self.X)
+
 if __name__ == "__main__":
     a = ABC (dim=test.dim, num=50, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
     arr = np.random.uniform(test.l_bound,test.u_bound, (50, test.dim))
     a.abc_init(arr)
     a.abc_iterator()
+
+    # Calculate mean fitness
+    fitness_array = a.get_current_fitness()
+    mean_fitness = np.mean(fitness_array)
+    print(mean_fitness)

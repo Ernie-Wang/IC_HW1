@@ -2,7 +2,7 @@
 import random
 import numpy as np
 
-# from benchmark import F16 as test
+#from benchmark import F24 as test
 
 end_thres = 1e-5
 class PSO():
@@ -65,6 +65,15 @@ class PSO():
         """ Iteration """
         for ite_idx in range(self.max_iter):
             print("Iteration: {ite}, best is {best}".format(ite=ite_idx+1, best=self.gbest_v))
+            
+            # Update particle position and velocity
+            r1 = np.random.uniform(size=(self.num, self.dim))
+            r2 = np.random.uniform(size=(self.num, self.dim))
+            self.V = self.V*random.uniform(0.2,0.6) + 2*r1*(self.pbest-self.X) + 2*r2*(self.gbest-self.X)
+            tmp_X = self.X + self.V
+            tmp_X = np.where(tmp_X > self.u_bound, self.u_bound, tmp_X)
+            tmp_X = np.where(tmp_X < self.l_bound, self.l_bound, tmp_X)
+            self.X = tmp_X.copy()
 
             # Particle iterator, update best value
             for part in range(self.num):
@@ -78,15 +87,6 @@ class PSO():
                     if test_tmp < self.gbest_v:
                         self.gbest = self.X[part].copy()
                         self.gbest_v = test_tmp
-            
-            # Update particle position and velocity
-            r1 = np.random.uniform(size=(self.num, self.dim))
-            r2 = np.random.uniform(size=(self.num, self.dim))
-            self.V = self.V*random.uniform(0.2,0.6) + 2*r1*(self.pbest-self.X) + 2*r2*(self.gbest-self.X)
-            tmp_X = self.X + self.V
-            tmp_X = np.where(tmp_X > self.u_bound, self.u_bound, tmp_X)
-            tmp_X = np.where(tmp_X < self.l_bound, self.l_bound, tmp_X)
-            self.X = tmp_X.copy()
 
             print(self.gbest)
             self.best_results[ite_idx] = self.gbest_v
@@ -94,8 +94,17 @@ class PSO():
             if self.triger(ite_idx):
                 break
 
+    def get_current_fitness(self):
+        """ Get current fitness of each agent """
+        return np.apply_along_axis(self.func, axis=1, arr=self.X)
+
 if __name__ == "__main__":
     a = PSO (dim=test.dim, num=50,max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
     arr = np.random.uniform(test.l_bound,test.u_bound, (50, test.dim))
     a.pso_init(arr)
     a.pso_iterator()
+
+    # Calculate mean fitness
+    fitness_array = a.get_current_fitness()
+    mean_fitness = np.mean(fitness_array)
+    print(mean_fitness)
