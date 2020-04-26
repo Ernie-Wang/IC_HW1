@@ -94,6 +94,14 @@ def print_median():
             ans[i][j] = result_median[i][j][ITER[j]-1]
     print("Median value, [ALGO][500/2500] \n", ans)
 
+def print_std():
+    result_std = np.std(RESULTS, axis=1)
+    ans = np.zeros((ALGO, ITER_KINDS))
+    for i in range(ALGO):
+        for j in range(ITER_KINDS):
+            ans[i][j] = result_std[i][j][ITER[j]-1]
+    print("std value, [ALGO][500/2500] \n", ans)
+
 if __name__ == "__main__":
     for run in range(RUNS):
         for kind in range(ITER_KINDS):
@@ -164,3 +172,4 @@ if __name__ == "__main__":
     plot_result()
     print_last_avg()
     print_median()
+    print_std()
