@@ -27,7 +27,7 @@ init_best = np.zeros((ITER_KINDS))                   # Store all the result for 
 
 ######### GSA variable ###########
 epsilon = 1e-5
-G_0 = 100
+G_0 = 10000
 ALPHA = 20
 K_best = 50
 end_thres = 1e-5
@@ -106,7 +106,7 @@ if __name__ == "__main__":
             algo.algorithm(arr)
 
             # Resize the result to 2500
-            # tmp = algo.best_results_so_far.copy()
+            tmp = algo.best_results_so_far.copy()
             tmp.resize(2500)
             RESULTS[1][run][kind] = tmp.copy()
             ###########################
