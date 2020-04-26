@@ -16,6 +16,7 @@ ITER_KINDS = 2
 ALGO = 3
 ITER = [500, 2500]
 RESULTS = np.zeros((ALGO, RUNS, ITER_KINDS, ITER[1]))                   # Store all the result for the whole runs
+LAST_ITER_AVG = np.zeros((ALGO, RUNS, ITER_KINDS))                   # Store all the result for the whole runs
 AVERAGE_RESULT = np.zeros((ALGO, ITER_KINDS, ITER[1]))                   # Store all the result for the whole runs
 init_best = np.zeros((ITER_KINDS))                   # Store all the result for the whole runs
 
@@ -80,6 +81,19 @@ def plot_result():
     plt.savefig("./result_csv/" + title)
     plt.show()
 
+def print_last_avg():
+    result = np.mean(LAST_ITER_AVG, axis=1)
+    result_mean = np.mean(result, axis=0)
+    print("Last Iteration average, [ALGO][500/2500] \n", result)
+
+def print_median():
+    result_median = np.median(RESULTS, axis=1)
+    ans = np.zeros((ALGO, ITER_KINDS))
+    for i in range(ALGO):
+        for j in range(ITER_KINDS):
+            ans[i][j] = result_median[i][j][ITER[j]-1]
+    print("Median value, [ALGO][500/2500] \n", ans)
+
 if __name__ == "__main__":
     for run in range(RUNS):
         for kind in range(ITER_KINDS):
@@ -100,6 +114,11 @@ if __name__ == "__main__":
             tmp = algo.best_results.copy()
             tmp.resize(2500)
             RESULTS[0][run][kind] = tmp.copy()
+
+            # Calculate mean fitness
+            fitness_array = algo.get_current_fitness()
+            LAST_ITER_AVG[0][run][kind] = np.mean(fitness_array)
+            print(LAST_ITER_AVG[0][run][kind])
             ###########################
 
             #########   GSA   #########
@@ -110,6 +129,11 @@ if __name__ == "__main__":
             tmp = algo.best_results_so_far.copy()
             tmp.resize(2500)
             RESULTS[1][run][kind] = tmp.copy()
+            
+            # Calculate mean fitness
+            fitness_array = algo.get_current_fitness()
+            LAST_ITER_AVG[1][run][kind] = np.mean(fitness_array)
+            print(LAST_ITER_AVG[1][run][kind])
             ###########################
 
             #########   ABC   #########
@@ -121,6 +145,11 @@ if __name__ == "__main__":
             tmp = algo.best_results.copy()
             tmp.resize(2500)
             RESULTS[2][run][kind] = tmp.copy()
+
+            # Calculate mean fitness
+            fitness_array = algo.get_current_fitness()
+            LAST_ITER_AVG[2][run][kind] = np.mean(fitness_array)
+            print(LAST_ITER_AVG[2][run][kind])
             ###########################
 
     for algo in range(ALGO):
@@ -133,3 +162,5 @@ if __name__ == "__main__":
             AVERAGE_RESULT[algo][kind] = average / RUNS
     write_file()
     plot_result()
+    print_last_avg()
+    print_median()

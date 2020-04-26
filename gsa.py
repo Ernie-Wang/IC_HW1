@@ -3,7 +3,7 @@ import numpy as np
 import random
 import math
 
-from benchmark import F16 as test
+# from benchmark import F16 as test
 
 ''' Constant variable '''
 epsilon = 1e-5
@@ -158,8 +158,6 @@ class GSA():
             if(upper-lower) < self.end_thres:
                 self.best_results[iteration:] = self.best_results[iteration]
                 self.best_results_so_far[iteration:] = self.best_results_so_far[iteration]
-                total_agent_value = np.apply_along_axis(self.func, axis=1, arr=self.X)
-                self.last_iter_avg = np.average(total_agent_value)
                 #print(self.best_results_so_far[2000])
                 return True
             else:
@@ -174,9 +172,9 @@ class GSA():
             self.best_sofar = self.best_results[iteration]
         self.best_results_so_far[iteration] = self.best_sofar
 
-        if iteration == (self.max_iter-1):
-            total_agent_value = np.apply_along_axis(self.func, axis=1, arr=self.X)
-            self.last_iter_avg = np.average(total_agent_value)
+        # if iteration == (self.max_iter-1):
+        #     total_agent_value = np.apply_along_axis(self.func, axis=1, arr=self.X)
+        #     self.last_iter_avg = np.average(total_agent_value)
 
         # print("Best fitness: ",self.func(self.X[sort_index[0]]) )
         print("Best: ",self.X[sort_index[0]], "fitness: ", self.best_results[iteration])
@@ -242,8 +240,17 @@ class GSA():
             if end:
                 break
 
+    def get_current_fitness(self):
+        """ Get current fitness of each agent """
+        return np.apply_along_axis(self.func, axis=1, arr=self.X)
+
 
 if __name__ == "__main__":
     f7 = GSA (g_0 = 100, dim=test.dim, num=50, rate=RATE, k=K_best, max_iter=2500, u_bound=test.u_bound, l_bound=test.l_bound, func=test.func, end_thres=end_thres)
     arr = np.random.uniform(test.l_bound,test.u_bound, (50, test.dim))
     f7.algorithm(arr)
+
+    # Calculate mean fitness
+    fitness_array = f7.get_current_fitness()
+    mean_fitness = np.mean(fitness_array)
+    print(mean_fitness)
