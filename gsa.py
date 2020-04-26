@@ -3,7 +3,7 @@ import numpy as np
 import random
 import math
 
-# from benchmark import F22 as test
+from benchmark import F16 as test
 
 ''' Constant variable '''
 epsilon = 1e-5
@@ -44,6 +44,8 @@ class GSA():
         self.best_sofar = 1000000000                       # Record best fitness value so far
         self.best_results = np.zeros((self.max_iter))                   # Fitness value of the agent
         self.best_results_so_far = np.zeros((self.max_iter))                   # Fitness value of the agent
+
+        self.last_iter_avg = 0                   # Fitness value of the agent
 
     def evaluate(self):
         for i in range(self.N):
@@ -156,6 +158,8 @@ class GSA():
             if(upper-lower) < self.end_thres:
                 self.best_results[iteration:] = self.best_results[iteration]
                 self.best_results_so_far[iteration:] = self.best_results_so_far[iteration]
+                total_agent_value = np.apply_along_axis(self.func, axis=1, arr=self.X)
+                self.last_iter_avg = np.average(total_agent_value)
                 #print(self.best_results_so_far[2000])
                 return True
             else:
@@ -169,6 +173,10 @@ class GSA():
         if self.best_sofar > self.best_results[iteration]:
             self.best_sofar = self.best_results[iteration]
         self.best_results_so_far[iteration] = self.best_sofar
+
+        if iteration == (self.max_iter-1):
+            total_agent_value = np.apply_along_axis(self.func, axis=1, arr=self.X)
+            self.last_iter_avg = np.average(total_agent_value)
 
         # print("Best fitness: ",self.func(self.X[sort_index[0]]) )
         print("Best: ",self.X[sort_index[0]], "fitness: ", self.best_results[iteration])

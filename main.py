@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 from pso import PSO
 from gsa import GSA
 from abc_py import ABC
-from benchmark import F24 as test
+from benchmark import F8 as test
 
 ''' Constant variable '''
 
