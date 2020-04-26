@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 from pso import PSO
 from gsa import GSA
 from abc_py import ABC
-from benchmark import F8 as test
+from benchmark import F24 as test
 
 ''' Constant variable '''
 
@@ -65,7 +65,7 @@ def plot_result():
         temp.resize(ITER[0], refcheck=False)
         temp = np.insert(temp, 1, init_best[0], 0)
         plt.plot(x1, temp) 
-
+    plt.savefig(title)
     plt.figure(2)
     # plt.subplot(3,  1,  3)  
 
@@ -77,6 +77,7 @@ def plot_result():
         temp = AVERAGE_RESULT[i][1].copy()
         temp = np.insert(temp, 0, init_best[1])
         plt.plot(x2, temp)
+    plt.savefig(title)
     plt.show()
 
 if __name__ == "__main__":
