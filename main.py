@@ -27,7 +27,7 @@ init_best = np.zeros((ITER_KINDS))                   # Store all the result for 
 
 ######### GSA variable ###########
 epsilon = 1e-5
-G_0 = 10000
+G_0 = 100
 ALPHA = 20
 K_best = 50
 end_thres = 1e-5
@@ -65,7 +65,7 @@ def plot_result():
         temp.resize(ITER[0], refcheck=False)
         temp = np.insert(temp, 1, init_best[0], 0)
         plt.plot(x1, temp) 
-    plt.savefig(title)
+    plt.savefig("./result_csv/"+title)
     plt.figure(2)
     # plt.subplot(3,  1,  3)  
 
@@ -77,7 +77,7 @@ def plot_result():
         temp = AVERAGE_RESULT[i][1].copy()
         temp = np.insert(temp, 0, init_best[1])
         plt.plot(x2, temp)
-    plt.savefig(title)
+    plt.savefig("./result_csv/" + title)
     plt.show()
 
 if __name__ == "__main__":
