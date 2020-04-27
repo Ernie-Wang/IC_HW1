@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 from pso import PSO
 from gsa import GSA
 from abc_py import ABC
-from benchmark import F8 as test
+from benchmark import F24 as test
 
 ''' Constant variable '''
 
@@ -169,7 +169,7 @@ if __name__ == "__main__":
                 average = average + RESULTS[algo][run][kind]
             AVERAGE_RESULT[algo][kind] = average / RUNS
     write_file()
-    plot_result()
     print_last_avg()
     print_median()
     print_std()
+    plot_result()
